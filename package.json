@@ -1,0 +1,22 @@
+{
+    "name": "telegram-bot",
+    "version": "1.0.0",
+    "description": "This is a telegram bot, to send messages to Subhranil anonymously",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "author": "Subhranil Chakraborty",
+    "license": "MIT",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "node-telegram-bot-api": "^0.65.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0"
+    }
+}
