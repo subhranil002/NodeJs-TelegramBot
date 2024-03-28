@@ -73,7 +73,6 @@ I Hope This Helps :)
             const match = regex.exec(msg.text);
             if (match) {
                 const resp = match[1];
-                console.log(`${msg.from.first_name}: ${resp}`);
                 bot.sendMessage(
                     process.env.ADMIN_CHAT_ID,
                     `
