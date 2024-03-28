@@ -24,24 +24,44 @@ if (bot) {
     console.log("Bot is running...🤖");
 }
 
+const waitingForSecretMessage = {};
+
 bot.on("text", (msg) => {
+    const chatId = msg.chat.id;
+
     switch (msg.text) {
         case "/start":
-            bot.sendMessage(msg.chat.id, "Hello! ... I'm Subhranil's Bot!");
+            waitingForSecretMessage[chatId] = false;
+            bot.sendMessage(chatId, "Hello! ... I'm Subhranil's Bot!");
             break;
         case "/secretMessage":
             bot.sendMessage(
-                msg.chat.id,
-                `
-            To send a secret message to Subhranil
-Use - 
-                `
+                chatId,
+                `Please send me a secret message for Master ... 😋
+Or if you want to cancel sending message please click - /cancel`
             );
-            bot.sendMessage(msg.chat.id, "SecretMessage: <message>");
+            waitingForSecretMessage[chatId] = true;
+            break;
+        case "/cancel":
+            if (waitingForSecretMessage[chatId]) {
+                waitingForSecretMessage[chatId] = false;
+                bot.sendMessage(
+                    chatId,
+                    `I cancelled sending message to Master ... 😔`
+                );
+            } else {
+                bot.sendMessage(
+                    chatId,
+                    `I don't understand that... 😔 ... But, Master surely does 🙃 ... Try sending a secret message to Master (Subhranil) 😋 
+Use - /secretMessage
+Or - /help`
+                );
+            }
             break;
         case "/contact":
+            waitingForSecretMessage[chatId] = false;
             bot.sendMessage(
-                msg.chat.id,
+                chatId,
                 `
             Linkedin - https://www.linkedin.com/in/subhranilchakraborty/
 GitHub - https://github.com/subhranil002
@@ -52,8 +72,9 @@ I Hope This Helps :)
             );
             break;
         case "/help":
+            waitingForSecretMessage[chatId] = false;
             bot.sendMessage(
-                msg.chat.id,
+                chatId,
                 `
             Hi there! Here are some activities we can do :)
     
@@ -69,23 +90,30 @@ I Hope This Helps :)
             );
             break;
         default:
-            const regex = /^SecretMessage:\s*(.*)$/s;
-            const match = regex.exec(msg.text);
-            if (match) {
-                const resp = match[1];
+            if (waitingForSecretMessage[chatId]) {
                 bot.sendMessage(
                     process.env.ADMIN_CHAT_ID,
-                    `
-        New Secret Message: 
-${resp}
-        `
-                );
-                bot.sendMessage(msg.chat.id, "Sent to Master! 🎉");
+                    `New Secret Message: 
+${msg.text}`
+                )
+                    .then(() => {
+                        bot.sendMessage(chatId, "Sent to Master! 🎉");
+                        waitingForSecretMessage[chatId] = false;
+                    })
+                    .catch((error) => {
+                        console.error("Error sending message to admin:", error);
+                        bot.sendMessage(
+                            chatId,
+                            "There was an error while sending your message. Please try again later."
+                        );
+                        waitingForSecretMessage[chatId] = false;
+                    });
             } else {
                 bot.sendMessage(
-                    msg.chat.id,
+                    chatId,
                     `I don't understand that... 😔 ... But, Master surely does 🙃 ... Try sending a secret message to Master (Subhranil) 😋 
-Use - /help`
+Use - /secretMessage
+Or - /help`
                 );
             }
             break;
