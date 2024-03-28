@@ -69,10 +69,11 @@ I Hope This Helps :)
             );
             break;
         default:
-            const regex = /^SecretMessage:\s*(.*)$/;
+            const regex = /^SecretMessage:\s*(.*)$/s;
             const match = regex.exec(msg.text);
             if (match) {
                 const resp = match[1];
+                console.log(`${msg.from.first_name}: ${resp}`);
                 bot.sendMessage(
                     process.env.ADMIN_CHAT_ID,
                     `
