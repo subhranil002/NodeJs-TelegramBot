@@ -18,7 +18,7 @@ Before running the bot, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) (Node Package Manager)
 - A Telegram Bot API Token (obtainable from the [BotFather](https://core.telegram.org/bots#6-botfather))
-- Use the `msg` variable to get your own `CHAT_ID`
+- Try `console.log(msg)` variable to get your own `CHAT_ID`
 
 ## Installation
 
